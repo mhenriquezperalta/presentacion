@@ -4,3 +4,6 @@ docs/
 
 # Copia de la plantilla original
 landing.zip
+
+# Dependencias de Node (pnpm)
+node_modules/

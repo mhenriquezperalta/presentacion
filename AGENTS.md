@@ -17,6 +17,8 @@ public/                      ← lo único que se publica
   Curriculum_Vitae_Manuel_Henriquez.pdf ← CV que muestra el botón "Ver CV (PDF)"
   .nojekyll                  ← evita que GitHub Pages procese con Jekyll
 docs/                        ← material fuente, ignorado por git (ver "Privacidad")
+package.json / pnpm-lock.yaml ← Vite (solo servidor de desarrollo), gestionado con pnpm
+vite.config.js               ← Vite sirve public/ tal cual (root: public, sin build)
 .github/workflows/pages.yml  ← despliegue a GitHub Pages en push a main
 .gitlab-ci.yml               ← despliegue a GitLab Pages en la rama por defecto
 landing.zip                  ← copia de la plantilla original; no se usa
@@ -25,7 +27,12 @@ landing.zip                  ← copia de la plantilla original; no se usa
 ## Comandos
 
 ```bash
-# Servidor local
+# Servidor de desarrollo con recarga automática (Node >= 22.12, pnpm)
+pnpm install
+pnpm dev          # abre http://localhost:5173 en el navegador
+pnpm start        # igual, sin abrir el navegador
+
+# Alternativas sin Node
 cd public && python -m http.server 8000      # http://localhost:8000
 # (o con Laragon: http://localhost/presentacion/public/)
 
@@ -33,12 +40,12 @@ cd public && python -m http.server 8000      # http://localhost:8000
 chrome --headless=new --no-pdf-header-footer --print-to-pdf=cv.pdf public/index.html
 ```
 
-No hay tests, linter ni paso de build. Verifica los cambios abriendo la página en escritorio, en móvil (< 768px), en modo oscuro y en vista de impresión.
+No hay tests, linter ni paso de build: Vite solo sirve los archivos en desarrollo y no participa en el despliegue. Verifica los cambios abriendo la página en escritorio, en móvil (< 768px), en modo oscuro y en vista de impresión.
 
 ## Convenciones
 
 - **Idioma**: todo el contenido visible está en español de Chile. Usa tildes y ñ reales (UTF-8), no entidades HTML.
-- **Bootstrap local, sin CDN**: Bootstrap 5.3.8 vive en `public/vendor/bootstrap-5.3.8/`. No enlaces CDNs ni agregues otras librerías, fuentes externas ni herramientas de build; el sitio debe funcionar abriendo `index.html` directamente. Para actualizar Bootstrap: descarga el tarball de npm (`https://registry.npmjs.org/bootstrap/-/bootstrap-X.Y.Z.tgz`), verifica su `dist.integrity` (SHA-512) contra `https://registry.npmjs.org/bootstrap/X.Y.Z`, copia `dist/css/bootstrap.min.css(.map)`, `dist/js/bootstrap.bundle.min.js(.map)` y `LICENSE` a `vendor/bootstrap-X.Y.Z/` y actualiza las dos rutas en `index.html`.
+- **Bootstrap local, sin CDN**: Bootstrap 5.3.8 vive en `public/vendor/bootstrap-5.3.8/`. No enlaces CDNs ni agregues otras librerías del lado del navegador, fuentes externas ni un paso de build; `vite` es la única dependencia de Node y es solo para desarrollo (versión fijada exacta en `package.json`); el sitio debe funcionar abriendo `index.html` directamente. Para actualizar Bootstrap: descarga el tarball de npm (`https://registry.npmjs.org/bootstrap/-/bootstrap-X.Y.Z.tgz`), verifica su `dist.integrity` (SHA-512) contra `https://registry.npmjs.org/bootstrap/X.Y.Z`, copia `dist/css/bootstrap.min.css(.map)`, `dist/js/bootstrap.bundle.min.js(.map)` y `LICENSE` a `vendor/bootstrap-X.Y.Z/` y actualiza las dos rutas en `index.html`.
 - **Usa Bootstrap primero**: grid (`row`/`col-*`), utilidades (`py-5`, `text-body-secondary`, `d-flex`…), `card`, `list-group`, `badge`, `navbar` y `modal`. En `styles.css` solo va lo que Bootstrap no resuelve.
 - **HTML**: semántico (`section`, `article`, `ol.timeline`, `dl.facts`). Cada sección tiene un `id` que coincide con un `.nav-link` del menú `#menu`; el Scrollspy de Bootstrap (`data-bs-spy` en `<body>`) marca la sección activa. Si agregas o quitas una sección, actualiza el menú.
 - **Colores y modo oscuro**: `styles.css` sobrescribe las variables de Bootstrap (`--bs-primary`, `--bs-body-bg`, `--bs-tertiary-bg`…) en `:root, [data-bs-theme="light"]` y `[data-bs-theme="dark"]`. Un script en el `<head>` pone `data-bs-theme` según `prefers-color-scheme`. `.btn-primary`/`.btn-outline-primary` se recolorean con sus variables `--bs-btn-*`. Para texto sobre `--bs-primary` usa `--on-primary`. Breakpoints: los de Bootstrap (`md` 768px para el menú, `lg` 992px para el hero).

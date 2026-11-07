@@ -1,0 +1,18 @@
+{
+  "name": "presentacion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio de presentación y currículum de Manuel Alejandro Henríquez Peralta",
+  "type": "module",
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite --open",
+    "start": "vite"
+  },
+  "devDependencies": {
+    "vite": "8.3.5"
+  }
+}
