@@ -1,5 +1,6 @@
-# El CV original incluye datos de contacto de referencias (terceros): no subirlo a un repositorio público.
-docs/*.docx
+# Material fuente del CV: los .docx incluyen datos de contacto de referencias (terceros).
+# El PDF publicable se copia a public/ y se versiona desde ahí.
+docs/
 
 # Copia de la plantilla original
 landing.zip

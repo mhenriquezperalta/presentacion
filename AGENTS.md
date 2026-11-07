@@ -12,10 +12,10 @@ Sitio estático de **presentación y currículum** de Manuel Alejandro Henríque
 public/                      ← lo único que se publica
   index.html                 ← todo el contenido (CV completo)
   styles.css                 ← estilos, modo oscuro y estilos de impresión
-  script.js                  ← menú móvil, año del footer, botón "Descargar CV", sección activa en el menú
+  script.js                  ← menú móvil, año del footer, sección activa en el menú
+  Curriculum_Vitae_Manuel_Henriquez.pdf ← CV que descarga el botón "Descargar CV (PDF)"
   .nojekyll                  ← evita que GitHub Pages procese con Jekyll
-docs/                        ← material fuente, NO se publica (ver "Privacidad")
-  Curriculum_Vitae_Manuel_Henriquez_v2.docx
+docs/                        ← material fuente, ignorado por git (ver "Privacidad")
 .github/workflows/pages.yml  ← despliegue a GitHub Pages en push a main
 .gitlab-ci.yml               ← despliegue a GitLab Pages en la rama por defecto
 landing.zip                  ← copia de la plantilla original; no se usa
@@ -28,7 +28,7 @@ landing.zip                  ← copia de la plantilla original; no se usa
 cd public && python -m http.server 8000      # http://localhost:8000
 # (o con Laragon: http://localhost/presentacion/public/)
 
-# Vista previa del PDF que genera "Descargar CV" (Chrome headless)
+# Vista previa de la versión impresa de la página (Chrome headless)
 chrome --headless=new --no-pdf-header-footer --print-to-pdf=cv.pdf public/index.html
 ```
 
@@ -40,7 +40,8 @@ No hay tests, linter ni paso de build. Verifica los cambios abriendo la página 
 - **Sin dependencias**: no agregues frameworks, CDNs, fuentes externas ni herramientas de build. El sitio debe funcionar abriendo `index.html` directamente.
 - **HTML**: semántico (`section`, `article`, `ol.timeline`, `dl.facts`). Cada sección tiene un `id` que coincide con un enlace del menú `#menu`; si agregas o quitas una sección, actualiza el menú.
 - **CSS**: los colores salen de variables en `:root` (`--primary`, `--on-primary`, etc.) y se redefinen en `@media (prefers-color-scheme: dark)`. No uses colores fijos para texto sobre `--primary`; usa `--on-primary`. Breakpoint único: `max-width: 860px`.
-- **Impresión**: el bloque `@media print` al final de `styles.css` convierte la página en el CV en PDF. Oculta navegación, botones, estadísticas, "Áreas de experiencia" y la sección de contacto (el contacto se imprime arriba con `.print-only`). Si agregas una sección, decide si debe imprimirse.
+- **Descargar CV**: el botón enlaza a `public/Curriculum_Vitae_Manuel_Henriquez.pdf` (copia del PDF de `docs/`). Para actualizarlo, reemplaza ese archivo manteniendo el nombre.
+- **Impresión**: el bloque `@media print` al final de `styles.css` da formato de CV cuando se imprime la página (Ctrl+P). Oculta navegación, botones, estadísticas, "Áreas de experiencia" y la sección de contacto (el contacto se imprime arriba con `.print-only`). Si agregas una sección, decide si debe imprimirse.
 - **JS**: ES5 dentro de una IIFE, sin módulos ni librerías. Debe degradar bien si JavaScript falla.
 - **Accesibilidad**: mantén `aria-label`/`aria-expanded` del menú, el enlace "Saltar al contenido", `aria-hidden` en emojis decorativos y contraste suficiente en ambos temas.
 
@@ -53,7 +54,7 @@ No inventes proyectos, enlaces, cifras ni logros que no estén en el CV. Si falt
 ## Privacidad
 
 - El CV en `docs/` contiene **nombres, teléfonos y correos de terceros** (referencias laborales). Nunca los copies a `public/` ni a ningún archivo publicado. En el sitio solo se indica "Referencias laborales disponibles a solicitud".
-- No copies el `.docx` a `public/`.
+- No copies ningún `.docx` a `public/`. Solo se publica el PDF, y antes de reemplazarlo revisa que no incluya datos de referencias.
 - El correo y teléfono del propio Manuel sí se publican, por decisión explícita.
 
 ## Despliegue

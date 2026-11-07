@@ -196,7 +196,7 @@ a { color: var(--primary); }
   * { transition: none !important; }
 }
 
-/* Impresión: el botón "Descargar CV" imprime la página como currículum */
+/* Impresión: al imprimir la página (Ctrl+P) sale como currículum */
 @media print {
   :root {
     --bg: #fff; --bg-alt: #fff; --text: #000; --muted: #333; --border: #ccc;

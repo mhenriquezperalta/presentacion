@@ -18,12 +18,6 @@
     });
   }
 
-  // "Descargar CV": usa la hoja de estilos de impresión para guardar como PDF.
-  var printButtons = document.querySelectorAll('.js-print');
-  for (var i = 0; i < printButtons.length; i++) {
-    printButtons[i].addEventListener('click', function () { window.print(); });
-  }
-
   // Marca en el menú la sección visible.
   if (menu && 'IntersectionObserver' in window) {
     var links = menu.querySelectorAll('a[href^="#"]');
