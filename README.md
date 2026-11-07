@@ -2,6 +2,8 @@
 
 Sitio estático (HTML + CSS + JS, sin dependencias) con la presentación profesional y el CV de Manuel Alejandro Henríquez Peralta. Listo para GitLab Pages y GitHub Pages.
 
+**Sitio publicado:** https://mhenriquezperalta.github.io/presentacion/
+
 ## Estructura
 
 ```

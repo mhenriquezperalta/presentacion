@@ -58,4 +58,6 @@ No inventes proyectos, enlaces, cifras ni logros que no estén en el CV. Si falt
 
 ## Despliegue
 
+URL pública (GitHub Pages): https://mhenriquezperalta.github.io/presentacion/ — está en `og:url`, `canonical` y en `url` del JSON-LD; si cambia el dominio, actualiza los tres.
+
 Ambos pipelines publican `public/` tal cual. Un `git push` a `main` despliega en GitHub; en GitLab despliega la rama por defecto. No hay variables de entorno ni secretos.
