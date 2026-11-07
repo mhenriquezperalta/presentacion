@@ -4,15 +4,16 @@ Guía para agentes de código (Claude Code, Codex, Cursor, Copilot, etc.) que tr
 
 ## Qué es
 
-Sitio estático de **presentación y currículum** de Manuel Alejandro Henríquez Peralta (Ingeniero en Informática). Una sola página en español, sin build, sin dependencias, sin framework. Se publica en GitHub Pages y GitLab Pages desde la carpeta `public/`.
+Sitio estático de **presentación y currículum** de Manuel Alejandro Henríquez Peralta (Ingeniero en Informática). Una sola página en español, sin build, construida con **Bootstrap 5.3.8** servido localmente (sin CDN). Se publica en GitHub Pages y GitLab Pages desde la carpeta `public/`.
 
 ## Estructura
 
 ```
 public/                      ← lo único que se publica
   index.html                 ← todo el contenido (CV completo)
-  styles.css                 ← estilos, modo oscuro y estilos de impresión
-  script.js                  ← menú móvil, año del footer, modal del CV, sección activa en el menú
+  styles.css                 ← identidad visual sobre Bootstrap (colores --bs-*, timeline, etiquetas), impresión
+  script.js                  ← año del footer, cierre del menú móvil y modal del CV
+  vendor/bootstrap-5.3.8/    ← Bootstrap local: css/bootstrap.min.css, js/bootstrap.bundle.min.js (+ .map y LICENSE)
   Curriculum_Vitae_Manuel_Henriquez.pdf ← CV que muestra el botón "Ver CV (PDF)"
   .nojekyll                  ← evita que GitHub Pages procese con Jekyll
 docs/                        ← material fuente, ignorado por git (ver "Privacidad")
@@ -32,18 +33,19 @@ cd public && python -m http.server 8000      # http://localhost:8000
 chrome --headless=new --no-pdf-header-footer --print-to-pdf=cv.pdf public/index.html
 ```
 
-No hay tests, linter ni paso de build. Verifica los cambios abriendo la página en escritorio, en móvil (≤ 860px), en modo oscuro y en vista de impresión.
+No hay tests, linter ni paso de build. Verifica los cambios abriendo la página en escritorio, en móvil (< 768px), en modo oscuro y en vista de impresión.
 
 ## Convenciones
 
 - **Idioma**: todo el contenido visible está en español de Chile. Usa tildes y ñ reales (UTF-8), no entidades HTML.
-- **Sin dependencias**: no agregues frameworks, CDNs, fuentes externas ni herramientas de build. El sitio debe funcionar abriendo `index.html` directamente.
-- **HTML**: semántico (`section`, `article`, `ol.timeline`, `dl.facts`). Cada sección tiene un `id` que coincide con un enlace del menú `#menu`; si agregas o quitas una sección, actualiza el menú.
-- **CSS**: los colores salen de variables en `:root` (`--primary`, `--on-primary`, etc.) y se redefinen en `@media (prefers-color-scheme: dark)`. No uses colores fijos para texto sobre `--primary`; usa `--on-primary`. Breakpoint único: `max-width: 860px`.
-- **Ver CV**: el botón (`.js-cv-modal`) abre `public/Curriculum_Vitae_Manuel_Henriquez.pdf` (copia del PDF de `docs/`) en el `<dialog id="cv-modal">`, con botones para descargar o abrir en pestaña. El iframe usa `#toolbar=0&navpanes=0&view=FitH` para ocultar la barra del visor (incluidas las herramientas de anotación de Edge). `#cv` en la URL abre el modal al cargar. Si el navegador no tiene `<dialog>` o visor de PDF integrado (`navigator.pdfViewerEnabled === false`, p. ej. Chrome en Android), el enlace descarga el archivo. Para actualizar el CV, reemplaza el PDF manteniendo el nombre.
-- **Impresión**: el bloque `@media print` al final de `styles.css` da formato de CV cuando se imprime la página (Ctrl+P). Oculta navegación, botones, estadísticas, "Áreas de experiencia" y la sección de contacto (el contacto se imprime arriba con `.print-only`). Si agregas una sección, decide si debe imprimirse.
-- **JS**: ES5 dentro de una IIFE, sin módulos ni librerías. Debe degradar bien si JavaScript falla.
-- **Accesibilidad**: mantén `aria-label`/`aria-expanded` del menú, el enlace "Saltar al contenido", `aria-hidden` en emojis decorativos y contraste suficiente en ambos temas.
+- **Bootstrap local, sin CDN**: Bootstrap 5.3.8 vive en `public/vendor/bootstrap-5.3.8/`. No enlaces CDNs ni agregues otras librerías, fuentes externas ni herramientas de build; el sitio debe funcionar abriendo `index.html` directamente. Para actualizar Bootstrap: descarga el tarball de npm (`https://registry.npmjs.org/bootstrap/-/bootstrap-X.Y.Z.tgz`), verifica su `dist.integrity` (SHA-512) contra `https://registry.npmjs.org/bootstrap/X.Y.Z`, copia `dist/css/bootstrap.min.css(.map)`, `dist/js/bootstrap.bundle.min.js(.map)` y `LICENSE` a `vendor/bootstrap-X.Y.Z/` y actualiza las dos rutas en `index.html`.
+- **Usa Bootstrap primero**: grid (`row`/`col-*`), utilidades (`py-5`, `text-body-secondary`, `d-flex`…), `card`, `list-group`, `badge`, `navbar` y `modal`. En `styles.css` solo va lo que Bootstrap no resuelve.
+- **HTML**: semántico (`section`, `article`, `ol.timeline`, `dl.facts`). Cada sección tiene un `id` que coincide con un `.nav-link` del menú `#menu`; el Scrollspy de Bootstrap (`data-bs-spy` en `<body>`) marca la sección activa. Si agregas o quitas una sección, actualiza el menú.
+- **Colores y modo oscuro**: `styles.css` sobrescribe las variables de Bootstrap (`--bs-primary`, `--bs-body-bg`, `--bs-tertiary-bg`…) en `:root, [data-bs-theme="light"]` y `[data-bs-theme="dark"]`. Un script en el `<head>` pone `data-bs-theme` según `prefers-color-scheme`. `.btn-primary`/`.btn-outline-primary` se recolorean con sus variables `--bs-btn-*`. Para texto sobre `--bs-primary` usa `--on-primary`. Breakpoints: los de Bootstrap (`md` 768px para el menú, `lg` 992px para el hero).
+- **Ver CV**: el botón (`.js-cv-modal`) abre `public/Curriculum_Vitae_Manuel_Henriquez.pdf` (copia del PDF de `docs/`) en el modal de Bootstrap `#cv-modal` (pantalla completa en móvil), con botones para descargar o abrir en pestaña. El iframe usa `#toolbar=0&navpanes=0&view=FitH` para ocultar la barra del visor (incluidas las herramientas de anotación de Edge). `#cv` en la URL abre el modal al cargar. Si Bootstrap no carga o el navegador no tiene visor de PDF integrado (`navigator.pdfViewerEnabled === false`, p. ej. Chrome en Android), el enlace descarga el archivo. Para actualizar el CV, reemplaza el PDF manteniendo el nombre.
+- **Impresión**: el bloque `@media print` al final de `styles.css` da formato de CV cuando se imprime la página (Ctrl+P). Lo que no se imprime lleva `d-print-none` (navegación, botones, estadísticas, "Áreas de experiencia", contacto, footer); la línea de contacto impresa usa `d-none d-print-block`. Si agregas una sección, decide si debe imprimirse.
+- **JS**: `script.js` en ES5 dentro de una IIFE, usando la API global `bootstrap` (Collapse, Modal). Debe degradar bien si JavaScript falla: el contenido se ve igual y "Ver CV" descarga el PDF.
+- **Accesibilidad**: mantén `aria-label`/`aria-controls` del `navbar-toggler`, el enlace "Saltar al contenido" (`visually-hidden-focusable`), `aria-hidden` en emojis decorativos y contraste suficiente en ambos temas.
 
 ## Contenido del CV
 
@@ -63,4 +65,4 @@ URL pública (GitHub Pages): https://mhenriquezperalta.github.io/presentacion/ �
 
 Espejo en GitLab Pages: https://mhenriquezperalta.gitlab.io/presentacion/ (no es la canónica). El remoto `origin` tiene dos URLs de push (GitHub y GitLab), así que `git push` publica en ambos.
 
-Ambos pipelines publican `public/` tal cual. Un `git push` a `main` despliega en GitHub; en GitLab despliega la rama por defecto. No hay variables de entorno ni secretos.
+Ambos pipelines publican `public/` tal cual. Un `git push` a `main` despliega en GitHub; en GitLab despliega la rama por defecto. El trabajo nuevo se hace en la rama `develop` y pasa a `main` cuando está listo para publicarse. No hay variables de entorno ni secretos.

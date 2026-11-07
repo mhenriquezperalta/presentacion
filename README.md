@@ -1,6 +1,6 @@
 # Manuel Henríquez — Presentación y currículum
 
-Sitio estático (HTML + CSS + JS, sin dependencias) con la presentación profesional y el CV de Manuel Alejandro Henríquez Peralta. Listo para GitLab Pages y GitHub Pages.
+Sitio estático (HTML + CSS + JS con Bootstrap 5.3.8 local, sin CDN ni build) con la presentación profesional y el CV de Manuel Alejandro Henríquez Peralta. Listo para GitLab Pages y GitHub Pages.
 
 **Sitio publicado:**
 
@@ -14,8 +14,9 @@ Un solo `git push` actualiza ambos (el remoto `origin` tiene las dos URLs de pus
 ```
 public/
   index.html   ← contenido del CV (perfil, experiencia, competencias, formación, contacto)
-  styles.css   ← estilos (colores en :root, modo oscuro y estilos de impresión)
-  script.js    ← menú móvil, año del footer, botón "Descargar CV" y sección activa
+  styles.css   ← identidad visual sobre Bootstrap (colores, modo oscuro, impresión)
+  script.js    ← año del footer, menú móvil y modal del CV
+  vendor/bootstrap-5.3.8/  ← Bootstrap servido localmente
 docs/          ← CV original en Word (no se publica; ignorado por git)
 .gitlab-ci.yml                ← despliegue en GitLab Pages
 .github/workflows/pages.yml   ← despliegue en GitHub Pages
@@ -24,7 +25,7 @@ docs/          ← CV original en Word (no se publica; ignorado por git)
 ## Actualizar el contenido
 
 1. Edita `public/index.html` cuando cambie el CV (también el bloque JSON-LD del `<head>` y las cifras de "Perfil").
-2. El botón **Descargar CV (PDF)** imprime la página con el bloque `@media print` de `styles.css`; el navegador permite "Guardar como PDF".
+2. El botón **Ver CV (PDF)** muestra `public/Curriculum_Vitae_Manuel_Henriquez.pdf` en un modal. Para actualizar el CV, reemplaza ese archivo con el mismo nombre.
 3. Los enlaces a LinkedIn, GitHub y GitLab están en la lista `.socials` de la sección Contacto y en `sameAs` del JSON-LD.
 
 Ver [AGENTS.md](AGENTS.md) para las convenciones del proyecto.
