@@ -2,7 +2,12 @@
 
 Sitio estático (HTML + CSS + JS, sin dependencias) con la presentación profesional y el CV de Manuel Alejandro Henríquez Peralta. Listo para GitLab Pages y GitHub Pages.
 
-**Sitio publicado:** https://mhenriquezperalta.github.io/presentacion/
+**Sitio publicado:**
+
+- GitHub Pages: https://mhenriquezperalta.github.io/presentacion/ (URL canónica)
+- GitLab Pages: https://mhenriquezperalta.gitlab.io/presentacion/
+
+Un solo `git push` actualiza ambos (el remoto `origin` tiene las dos URLs de push).
 
 ## Estructura
 

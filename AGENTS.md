@@ -60,4 +60,6 @@ No inventes proyectos, enlaces, cifras ni logros que no estén en el CV. Si falt
 
 URL pública (GitHub Pages): https://mhenriquezperalta.github.io/presentacion/ — está en `og:url`, `canonical` y en `url` del JSON-LD; si cambia el dominio, actualiza los tres.
 
+Espejo en GitLab Pages: https://mhenriquezperalta.gitlab.io/presentacion/ (no es la canónica). El remoto `origin` tiene dos URLs de push (GitHub y GitLab), así que `git push` publica en ambos.
+
 Ambos pipelines publican `public/` tal cual. Un `git push` a `main` despliega en GitHub; en GitLab despliega la rama por defecto. No hay variables de entorno ni secretos.
