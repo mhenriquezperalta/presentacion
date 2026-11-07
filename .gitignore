@@ -1,0 +1,5 @@
+# El CV original incluye datos de contacto de referencias (terceros): no subirlo a un repositorio público.
+docs/*.docx
+
+# Copia de la plantilla original
+landing.zip

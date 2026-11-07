@@ -1,0 +1,12 @@
+# GitLab Pages: publica el contenido de la carpeta public/ en cada push a la rama por defecto.
+# URL resultante: https://<usuario-o-grupo>.gitlab.io/<repositorio>/
+pages:
+  stage: deploy
+  image: busybox:latest
+  script:
+    - echo "Publicando sitio estático desde public/"
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
