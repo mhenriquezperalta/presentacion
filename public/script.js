@@ -18,6 +18,31 @@
     });
   }
 
+  // "Ver CV": muestra el PDF en un modal. Sin <dialog> o sin visor de PDF
+  // integrado (p. ej. Chrome en Android), el enlace descarga el archivo.
+  var modal = document.getElementById('cv-modal');
+  var canShowPdf = navigator.pdfViewerEnabled !== false;
+  if (modal && typeof modal.showModal === 'function' && canShowPdf) {
+    var frame = modal.querySelector('.modal-frame');
+    var openModal = function () {
+      if (!frame.getAttribute('src')) frame.setAttribute('src', frame.getAttribute('data-src'));
+      modal.showModal();
+    };
+    var cvLinks = document.querySelectorAll('.js-cv-modal');
+    for (var i = 0; i < cvLinks.length; i++) {
+      cvLinks[i].addEventListener('click', function (e) {
+        e.preventDefault();
+        openModal();
+      });
+    }
+    modal.querySelector('.modal-close').addEventListener('click', function () { modal.close(); });
+    // Cierra al hacer clic fuera del contenido (sobre el fondo).
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) modal.close();
+    });
+    if (location.hash === '#cv') openModal();
+  }
+
   // Marca en el menú la sección visible.
   if (menu && 'IntersectionObserver' in window) {
     var links = menu.querySelectorAll('a[href^="#"]');

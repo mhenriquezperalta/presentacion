@@ -68,7 +68,7 @@
           <div class="cta-row">
             <a href="#contacto" class="btn">Contactar</a>
             <a href="#experiencia" class="btn btn-ghost">Ver experiencia</a>
-            <a href="Curriculum_Vitae_Manuel_Henriquez.pdf" class="btn btn-ghost" download>Descargar CV (PDF)</a>
+            <a href="Curriculum_Vitae_Manuel_Henriquez.pdf" class="btn btn-ghost js-cv-modal" download>Ver CV (PDF)</a>
           </div>
           <p class="print-only">mhenriquezperalta@gmail.com · +56 9 8390 5224 · linkedin.com/in/mhenriquezp</p>
           <ul class="trust">
@@ -277,6 +277,18 @@
       <p><a href="#inicio">Volver arriba ↑</a></p>
     </div>
   </footer>
+
+  <dialog id="cv-modal" class="modal" aria-labelledby="cv-modal-title">
+    <div class="modal-head">
+      <h2 id="cv-modal-title">Currículum Vitae</h2>
+      <div class="modal-actions">
+        <a class="btn btn-small" href="Curriculum_Vitae_Manuel_Henriquez.pdf" download>Descargar</a>
+        <a class="btn btn-small btn-ghost" href="Curriculum_Vitae_Manuel_Henriquez.pdf" target="_blank" rel="noopener">Abrir en pestaña</a>
+        <button type="button" class="modal-close" aria-label="Cerrar" autofocus>✕</button>
+      </div>
+    </div>
+    <iframe class="modal-frame" title="Currículum Vitae de Manuel Henríquez (PDF)" data-src="Curriculum_Vitae_Manuel_Henriquez.pdf#view=FitH&navpanes=0"></iframe>
+  </dialog>
 
   <script src="script.js"></script>
 </body>

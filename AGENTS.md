@@ -12,8 +12,8 @@ Sitio estático de **presentación y currículum** de Manuel Alejandro Henríque
 public/                      ← lo único que se publica
   index.html                 ← todo el contenido (CV completo)
   styles.css                 ← estilos, modo oscuro y estilos de impresión
-  script.js                  ← menú móvil, año del footer, sección activa en el menú
-  Curriculum_Vitae_Manuel_Henriquez.pdf ← CV que descarga el botón "Descargar CV (PDF)"
+  script.js                  ← menú móvil, año del footer, modal del CV, sección activa en el menú
+  Curriculum_Vitae_Manuel_Henriquez.pdf ← CV que muestra el botón "Ver CV (PDF)"
   .nojekyll                  ← evita que GitHub Pages procese con Jekyll
 docs/                        ← material fuente, ignorado por git (ver "Privacidad")
 .github/workflows/pages.yml  ← despliegue a GitHub Pages en push a main
@@ -40,7 +40,7 @@ No hay tests, linter ni paso de build. Verifica los cambios abriendo la página 
 - **Sin dependencias**: no agregues frameworks, CDNs, fuentes externas ni herramientas de build. El sitio debe funcionar abriendo `index.html` directamente.
 - **HTML**: semántico (`section`, `article`, `ol.timeline`, `dl.facts`). Cada sección tiene un `id` que coincide con un enlace del menú `#menu`; si agregas o quitas una sección, actualiza el menú.
 - **CSS**: los colores salen de variables en `:root` (`--primary`, `--on-primary`, etc.) y se redefinen en `@media (prefers-color-scheme: dark)`. No uses colores fijos para texto sobre `--primary`; usa `--on-primary`. Breakpoint único: `max-width: 860px`.
-- **Descargar CV**: el botón enlaza a `public/Curriculum_Vitae_Manuel_Henriquez.pdf` (copia del PDF de `docs/`). Para actualizarlo, reemplaza ese archivo manteniendo el nombre.
+- **Ver CV**: el botón (`.js-cv-modal`) abre `public/Curriculum_Vitae_Manuel_Henriquez.pdf` (copia del PDF de `docs/`) en el `<dialog id="cv-modal">`, con botones para descargar o abrir en pestaña. `#cv` en la URL abre el modal al cargar. Si el navegador no tiene `<dialog>` o visor de PDF integrado (`navigator.pdfViewerEnabled === false`, p. ej. Chrome en Android), el enlace descarga el archivo. Para actualizar el CV, reemplaza el PDF manteniendo el nombre.
 - **Impresión**: el bloque `@media print` al final de `styles.css` da formato de CV cuando se imprime la página (Ctrl+P). Oculta navegación, botones, estadísticas, "Áreas de experiencia" y la sección de contacto (el contacto se imprime arriba con `.print-only`). Si agregas una sección, decide si debe imprimirse.
 - **JS**: ES5 dentro de una IIFE, sin módulos ni librerías. Debe degradar bien si JavaScript falla.
 - **Accesibilidad**: mantén `aria-label`/`aria-expanded` del menú, el enlace "Saltar al contenido", `aria-hidden` en emojis decorativos y contraste suficiente en ambos temas.
