@@ -90,6 +90,9 @@ h1, h2, h3 { letter-spacing: -.01em; }
   border-width: 2px;
   font-weight: 600;
 }
+.btn-icon { display: inline-grid; place-items: center; width: 42px; height: 42px; padding: 0; }
+.btn-icon svg { transition: transform .15s; }
+.btn-icon:hover svg { transform: translateY(-2px); }
 .btn-light { --bs-btn-color: #0b5f59; --bs-btn-hover-color: #0b5f59; font-weight: 600; }
 
 .skip-link {
