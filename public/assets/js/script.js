@@ -12,7 +12,7 @@
     toggleBackToTop();
   }
 
-  // Bootstrap (vendor/bootstrap-5.3.8) maneja el menú colapsable y la sección activa (Scrollspy).
+  // Bootstrap 5.3.8 (assets/js/bootstrap.bundle.min.js) maneja el menú colapsable y la sección activa (Scrollspy).
   if (!window.bootstrap) return;
 
   // En móvil, cierra el menú al elegir una sección.

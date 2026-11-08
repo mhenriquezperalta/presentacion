@@ -11,10 +11,14 @@ Sitio estático de **presentación y currículum** de Manuel Alejandro Henríque
 ```
 public/                      ← lo único que se publica
   index.html                 ← todo el contenido (CV completo)
-  styles.css                 ← identidad visual sobre Bootstrap (colores --bs-*, timeline, etiquetas), impresión
-  script.js                  ← año del footer, botón flotante "Volver arriba", cierre del menú móvil y modal del CV
-  vendor/bootstrap-5.3.8/    ← Bootstrap local: css/bootstrap.min.css, js/bootstrap.bundle.min.js (+ .map y LICENSE)
-  Curriculum_Vitae_Manuel_Henriquez.pdf ← CV que muestra el botón "Ver CV (PDF)"
+  assets/
+    css/styles.css           ← identidad visual sobre Bootstrap (colores --bs-*, timeline, etiquetas), impresión
+    css/bootstrap.min.css    ← Bootstrap 5.3.8 local (+ .map)
+    js/script.js             ← año del footer, botón flotante "Volver arriba", cierre del menú móvil y modal del CV
+    js/bootstrap.bundle.min.js ← Bootstrap 5.3.8 local con Popper (+ .map)
+    img/                     ← imágenes del sitio (vacía por ahora; el favicon es un SVG inline)
+    docs/Curriculum_Vitae_Manuel_Henriquez.pdf ← CV que muestra el botón "Ver CV (PDF)"
+    bootstrap-LICENSE.txt    ← licencia MIT de Bootstrap
   .nojekyll                  ← evita que GitHub Pages procese con Jekyll
 docs/                        ← material fuente, ignorado por git (ver "Privacidad")
 package.json / pnpm-lock.yaml ← Vite (solo servidor de desarrollo), gestionado con pnpm
@@ -45,14 +49,14 @@ No hay tests, linter ni paso de build: Vite solo sirve los archivos en desarroll
 ## Convenciones
 
 - **Idioma**: todo el contenido visible está en español de Chile. Usa tildes y ñ reales (UTF-8), no entidades HTML.
-- **Bootstrap local, sin CDN**: Bootstrap 5.3.8 vive en `public/vendor/bootstrap-5.3.8/`. No enlaces CDNs ni agregues otras librerías del lado del navegador, fuentes externas ni un paso de build; `vite` es la única dependencia de Node y es solo para desarrollo (versión fijada exacta en `package.json`); el sitio debe funcionar abriendo `index.html` directamente. Para actualizar Bootstrap: descarga el tarball de npm (`https://registry.npmjs.org/bootstrap/-/bootstrap-X.Y.Z.tgz`), verifica su `dist.integrity` (SHA-512) contra `https://registry.npmjs.org/bootstrap/X.Y.Z`, copia `dist/css/bootstrap.min.css(.map)`, `dist/js/bootstrap.bundle.min.js(.map)` y `LICENSE` a `vendor/bootstrap-X.Y.Z/` y actualiza las dos rutas en `index.html`.
+- **Bootstrap local, sin CDN**: Bootstrap 5.3.8 vive en `public/assets/css/bootstrap.min.css` y `public/assets/js/bootstrap.bundle.min.js`. No enlaces CDNs ni agregues otras librerías del lado del navegador, fuentes externas ni un paso de build; `vite` es la única dependencia de Node y es solo para desarrollo (versión fijada exacta en `package.json`); el sitio debe funcionar abriendo `index.html` directamente. Para actualizar Bootstrap: descarga el tarball de npm (`https://registry.npmjs.org/bootstrap/-/bootstrap-X.Y.Z.tgz`), verifica su `dist.integrity` (SHA-512) contra `https://registry.npmjs.org/bootstrap/X.Y.Z`, reemplaza `assets/css/bootstrap.min.css(.map)`, `assets/js/bootstrap.bundle.min.js(.map)` y `assets/bootstrap-LICENSE.txt` con los de `dist/` y `LICENSE`, y actualiza la versión en este archivo y en el comentario de `styles.css`.
 - **Usa Bootstrap primero**: grid (`row`/`col-*`), utilidades (`py-5`, `text-body-secondary`, `d-flex`…), `card`, `list-group`, `badge`, `navbar` y `modal`. En `styles.css` solo va lo que Bootstrap no resuelve.
 - **HTML**: semántico (`section`, `article`, `ol.timeline`, `dl.facts`). Cada sección tiene un `id` que coincide con un `.nav-link` del menú `#menu`; el Scrollspy de Bootstrap (`data-bs-spy` en `<body>`) marca la sección activa. Si agregas o quitas una sección, actualiza el menú.
-- **Colores y modo oscuro**: `styles.css` sobrescribe las variables de Bootstrap (`--bs-primary`, `--bs-body-bg`, `--bs-tertiary-bg`…) en `:root, [data-bs-theme="light"]` y `[data-bs-theme="dark"]`. Un script en el `<head>` pone `data-bs-theme` según `prefers-color-scheme`. `.btn-primary`/`.btn-outline-primary` se recolorean con sus variables `--bs-btn-*`. Para texto sobre `--bs-primary` usa `--on-primary`. Breakpoints: los de Bootstrap (`md` 768px para el menú, `lg` 992px para el hero).
-- **Ver CV**: el botón (`.js-cv-modal`) abre `public/Curriculum_Vitae_Manuel_Henriquez.pdf` (copia del PDF de `docs/`) en el modal de Bootstrap `#cv-modal` (pantalla completa en móvil), con botones para descargar o abrir en pestaña. El iframe usa `#toolbar=0&navpanes=0&view=FitH` para ocultar la barra del visor (incluidas las herramientas de anotación de Edge). `#cv` en la URL abre el modal al cargar. Si Bootstrap no carga o el navegador no tiene visor de PDF integrado (`navigator.pdfViewerEnabled === false`, p. ej. Chrome en Android), el enlace descarga el archivo. Para actualizar el CV, reemplaza el PDF manteniendo el nombre.
+- **Colores y modo oscuro**: `assets/css/styles.css` sobrescribe las variables de Bootstrap (`--bs-primary`, `--bs-body-bg`, `--bs-tertiary-bg`…) en `:root, [data-bs-theme="light"]` y `[data-bs-theme="dark"]`. Un script en el `<head>` pone `data-bs-theme` según `prefers-color-scheme`. `.btn-primary`/`.btn-outline-primary` se recolorean con sus variables `--bs-btn-*`. Para texto sobre `--bs-primary` usa `--on-primary`. Breakpoints: los de Bootstrap (`md` 768px para el menú, `lg` 992px para el hero).
+- **Ver CV**: el botón (`.js-cv-modal`) abre `public/assets/docs/Curriculum_Vitae_Manuel_Henriquez.pdf` (copia del PDF de `docs/`) en el modal de Bootstrap `#cv-modal` (pantalla completa en móvil), con botones para descargar o abrir en pestaña. El iframe usa `#toolbar=0&navpanes=0&view=FitH` para ocultar la barra del visor (incluidas las herramientas de anotación de Edge). `#cv` en la URL abre el modal al cargar. Si Bootstrap no carga o el navegador no tiene visor de PDF integrado (`navigator.pdfViewerEnabled === false`, p. ej. Chrome en Android), el enlace descarga el archivo. Para actualizar el CV, reemplaza el PDF manteniendo el nombre.
 - **Volver arriba**: botón flotante `.back-to-top` (esquina inferior derecha). `script.js` le agrega `.show` al bajar más de 400px; el script del `<head>` pone la clase `js` en `<html>`, y sin ella el botón queda siempre visible.
-- **Impresión**: el bloque `@media print` al final de `styles.css` da formato de CV cuando se imprime la página (Ctrl+P). Lo que no se imprime lleva `d-print-none` (navegación, botones, estadísticas, "Áreas de experiencia", contacto, footer); la línea de contacto impresa usa `d-none d-print-block`. Si agregas una sección, decide si debe imprimirse.
-- **JS**: `script.js` en ES5 dentro de una IIFE, usando la API global `bootstrap` (Collapse, Modal). Debe degradar bien si JavaScript falla: el contenido se ve igual y "Ver CV" descarga el PDF.
+- **Impresión**: el bloque `@media print` al final de `assets/css/styles.css` da formato de CV cuando se imprime la página (Ctrl+P). Lo que no se imprime lleva `d-print-none` (navegación, botones, estadísticas, "Áreas de experiencia", contacto, footer); la línea de contacto impresa usa `d-none d-print-block`. Si agregas una sección, decide si debe imprimirse.
+- **JS**: `assets/js/script.js` en ES5 dentro de una IIFE, usando la API global `bootstrap` (Collapse, Modal). Debe degradar bien si JavaScript falla: el contenido se ve igual y "Ver CV" descarga el PDF.
 - **Accesibilidad**: mantén `aria-label`/`aria-controls` del `navbar-toggler`, el enlace "Saltar al contenido" (`visually-hidden-focusable`), `aria-hidden` en emojis decorativos y contraste suficiente en ambos temas.
 
 ## Contenido del CV
@@ -64,7 +68,7 @@ No inventes proyectos, enlaces, cifras ni logros que no estén en el CV. Si falt
 ## Privacidad
 
 - El CV en `docs/` contiene **nombres, teléfonos y correos de terceros** (referencias laborales). Nunca los copies a `public/` ni a ningún archivo publicado. En el sitio solo se indica "Referencias laborales disponibles a solicitud".
-- No copies ningún `.docx` a `public/`. Solo se publica el PDF, y antes de reemplazarlo revisa que no incluya datos de referencias.
+- No copies ningún `.docx` a `public/`. Solo se publica el PDF (`public/assets/docs/`), y antes de reemplazarlo revisa que no incluya datos de referencias.
 - El correo y teléfono del propio Manuel sí se publican, por decisión explícita.
 
 ## Despliegue
