@@ -10,9 +10,14 @@
   },
   "scripts": {
     "dev": "vite --open",
-    "start": "vite"
+    "start": "vite",
+    "vendor": "node scripts/copy-vendor.mjs",
+    "postinstall": "node scripts/copy-vendor.mjs"
   },
   "devDependencies": {
     "vite": "8.3.5"
+  },
+  "dependencies": {
+    "bootstrap": "5.3.8"
   }
 }

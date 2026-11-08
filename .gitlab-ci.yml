@@ -1,10 +1,20 @@
 # GitLab Pages: publica el contenido de la carpeta public/ en cada push a la rama por defecto.
+# Antes de publicar, `pnpm install` copia Bootstrap a public/assets/ (postinstall).
 # URL resultante: https://<usuario-o-grupo>.gitlab.io/<repositorio>/
 pages:
   stage: deploy
-  image: busybox:latest
+  image: node:22-alpine
+  variables:
+    COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+  cache:
+    key:
+      files:
+        - pnpm-lock.yaml
+    paths:
+      - .pnpm-store
   script:
-    - echo "Publicando sitio estático desde public/"
+    - corepack enable   # activa la versión de pnpm de "packageManager" en package.json
+    - pnpm install --prod --frozen-lockfile --store-dir .pnpm-store
   artifacts:
     paths:
       - public

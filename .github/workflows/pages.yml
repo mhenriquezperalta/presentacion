@@ -1,4 +1,5 @@
 # GitHub Pages: publica la carpeta public/ en cada push a main.
+# Antes de publicar, `pnpm install` copia Bootstrap a public/assets/ (postinstall).
 # Requiere: Settings → Pages → Build and deployment → Source: "GitHub Actions".
 # URL resultante: https://<usuario>.github.io/<repositorio>/
 name: Deploy a GitHub Pages
@@ -25,6 +26,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4   # usa la versión de "packageManager" en package.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --prod --frozen-lockfile
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
