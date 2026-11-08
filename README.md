@@ -1,69 +1,102 @@
 # Manuel Henríquez — Presentación y currículum
 
-Sitio estático (HTML + CSS + JS con Bootstrap 5.3.8 instalado con pnpm, sin CDN ni build) con la presentación profesional y el CV de Manuel Alejandro Henríquez Peralta. Listo para GitLab Pages y GitHub Pages.
+Sitio de una sola página con la presentación profesional y el currículum de Manuel Alejandro Henríquez Peralta, Ingeniero en Informática.
 
 **Sitio publicado:**
 
 - GitHub Pages: https://mhenriquezperalta.github.io/presentacion/ (URL canónica)
 - GitLab Pages: https://mhenriquezperalta.gitlab.io/presentacion/
 
-Un solo `git push` actualiza ambos (el remoto `origin` tiene las dos URLs de push).
+## Funcionalidades
+
+- Perfil, experiencia, áreas de experiencia, competencias, formación y contacto.
+- **Ver CV (PDF)**: muestra el currículum en un modal, con opciones para descargarlo o abrirlo en otra pestaña. El enlace `…/presentacion/#cv` abre el modal directamente.
+- Modo claro y oscuro automático, según la configuración del sistema.
+- Loader de carga, menú que marca la sección visible y botón flotante "Volver arriba".
+- Versión imprimible: al imprimir la página (Ctrl+P) sale con formato de currículum.
+- Diseño adaptable a móvil, metadatos para buscadores y vista previa en redes sociales.
+
+## Tecnologías
+
+| | Versión | Uso |
+|---|---|---|
+| [Bootstrap](https://getbootstrap.com/) | 5.3.8 | Componentes y estilos del sitio, servido localmente (sin CDN) |
+| [Vite](https://vite.dev/) | 8.3.5 | Servidor de desarrollo con recarga automática (no participa en el despliegue) |
+| [pnpm](https://pnpm.io/) | 11.17.0 | Gestor de dependencias |
+| Node.js | ≥ 22.12 | Requerido por pnpm y Vite |
+
+El sitio no tiene paso de build: es HTML, CSS y JavaScript que se publican tal cual desde `public/`.
+
+## Desarrollo local
+
+```bash
+pnpm install   # instala dependencias y copia Bootstrap a public/assets/
+pnpm dev       # servidor en http://localhost:5173 (abre el navegador)
+```
+
+| Comando | Qué hace |
+|---|---|
+| `pnpm install` | Instala dependencias y, al terminar, copia Bootstrap a `public/assets/` |
+| `pnpm dev` | Servidor de desarrollo con recarga automática; abre el navegador |
+| `pnpm start` | Igual que `pnpm dev`, sin abrir el navegador |
+| `pnpm vendor` | Vuelve a copiar Bootstrap a `public/assets/` sin reinstalar |
+
+`pnpm install` es obligatorio después de clonar el repositorio: sin él la página se ve sin estilos. Una vez ejecutado, también se puede abrir con Laragon (http://localhost/presentacion/public/) o con `cd public && python -m http.server 8000`.
 
 ## Estructura
 
 ```
-public/
-  index.html   ← contenido del CV (perfil, experiencia, competencias, formación, contacto)
+public/                        ← lo único que se publica
+  index.html                   ← todo el contenido del sitio
   assets/
-    css/       ← styles.css (identidad visual, modo oscuro, impresión) y Bootstrap 5.3.8
-    js/        ← script.js (menú, modal del CV, volver arriba) y Bootstrap 5.3.8
-    img/       ← imágenes
-    docs/      ← Curriculum_Vitae_Manuel_Henriquez.pdf
-docs/          ← CV original en Word (no se publica; ignorado por git)
-.gitlab-ci.yml                ← despliegue en GitLab Pages
-.github/workflows/pages.yml   ← despliegue en GitHub Pages
+    css/styles.css             ← identidad visual sobre Bootstrap, modo oscuro, loader, impresión
+    js/script.js               ← menú móvil, modal del CV, botón "Volver arriba"
+    img/                       ← imágenes
+    docs/Curriculum_Vitae_Manuel_Henriquez.pdf  ← CV que muestra el modal
+    (bootstrap.min.css, bootstrap.bundle.min.js y su licencia los genera pnpm install)
+scripts/copy-vendor.mjs        ← copia Bootstrap de node_modules a public/assets/
+package.json, pnpm-lock.yaml   ← dependencias
+vite.config.js                 ← configuración del servidor de desarrollo
+.github/workflows/pages.yml    ← despliegue en GitHub Pages
+.gitlab-ci.yml                 ← despliegue en GitLab Pages
+AGENTS.md, CLAUDE.md           ← guía del proyecto para agentes de código (mismo contenido)
+docs/                          ← material fuente del CV (no se sube al repositorio)
 ```
 
 ## Actualizar el contenido
 
-1. Edita `public/index.html` cuando cambie el CV (también el bloque JSON-LD del `<head>` y las cifras de "Perfil").
-2. El botón **Ver CV (PDF)** muestra `public/assets/docs/Curriculum_Vitae_Manuel_Henriquez.pdf` en un modal. Para actualizar el CV, reemplaza ese archivo con el mismo nombre.
-3. Los enlaces a LinkedIn, GitHub y GitLab están en la lista `.socials` de la sección Contacto y en `sameAs` del JSON-LD.
+- **Textos del sitio:** edita `public/index.html`. Si cambia el cargo o la experiencia, actualiza también el bloque JSON-LD del `<head>` y las cifras de la sección "Perfil".
+- **CV en PDF:** reemplaza `public/assets/docs/Curriculum_Vitae_Manuel_Henriquez.pdf` manteniendo el nombre. Antes de publicarlo, revisa que no incluya datos de contacto de terceros (referencias).
+- **Redes:** los enlaces a LinkedIn, GitHub y GitLab están en la lista `.socials` de la sección Contacto y en `sameAs` del JSON-LD.
+- **Colores:** variables `--bs-*` al inicio de `public/assets/css/styles.css`, para el tema claro y el oscuro.
 
-Ver [AGENTS.md](AGENTS.md) para las convenciones del proyecto.
+## Dependencias
 
-## Desarrollo local
-
-Requiere Node 22.12 o superior y pnpm.
-
-```bash
-pnpm install  # instala dependencias y copia Bootstrap a public/assets/
-pnpm dev      # servidor con recarga automática en http://localhost:5173
-```
-
-Las dependencias se agregan siempre con pnpm (`pnpm add --save-exact paquete@versión`). Los archivos de Bootstrap en `public/assets/` los genera `pnpm install` y no se suben al repositorio; los pipelines los generan antes de publicar.
-
-Sin Vite (después de `pnpm install`): `cd public && python -m http.server 8000` y abre http://localhost:8000.
-
-## Publicar en GitLab Pages
-
-1. Crea un repositorio en GitLab y sube estos archivos a la rama por defecto.
-2. El pipeline `pages` se ejecuta solo.
-3. El sitio queda en `https://<usuario-o-grupo>.gitlab.io/<repositorio>/` (Deploy → Pages).
-
-## Publicar en GitHub Pages
-
-1. Crea un repositorio en GitHub y sube estos archivos a la rama `main`.
-2. En **Settings → Pages → Build and deployment → Source**, elige **GitHub Actions**.
-3. El workflow se ejecuta solo. El sitio queda en `https://<usuario>.github.io/<repositorio>/`.
-
-## Publicar en ambos
+Todas las dependencias se gestionan con pnpm, con versión exacta:
 
 ```bash
-git remote add origin  git@github.com:USUARIO/REPO.git
-git remote set-url --add --push origin git@github.com:USUARIO/REPO.git
-git remote set-url --add --push origin git@gitlab.com:USUARIO/REPO.git
-git push origin main
+pnpm add --save-exact paquete@versión      # dependencia del sitio
+pnpm add -D --save-exact paquete@versión   # dependencia de desarrollo
 ```
 
-Con eso un solo `git push` actualiza ambos sitios. Si GitLab usa `master` como rama por defecto, ajusta el nombre de la rama.
+No se descargan librerías a mano ni se usan CDN. Para actualizar Bootstrap: `pnpm add --save-exact bootstrap@X.Y.Z`. Los archivos de Bootstrap en `public/assets/` no se suben al repositorio: los genera `pnpm install`, tanto en local como en los pipelines.
+
+## Ramas y publicación
+
+- **`develop`**: rama de trabajo. Sus cambios no se publican.
+- **`main`**: cada push publica el sitio en GitHub Pages y GitLab Pages.
+
+El remoto `origin` tiene dos URLs de push (GitHub y GitLab), así que un solo `git push` actualiza ambos repositorios:
+
+```bash
+git checkout main
+git merge develop
+git push
+```
+
+Ambos pipelines ejecutan `pnpm install --prod --frozen-lockfile` y publican `public/`. Si cambias dependencias, sube también `pnpm-lock.yaml`.
+
+Configuración necesaria (ya aplicada en este proyecto):
+
+- **GitHub:** Settings → Pages → Build and deployment → Source: **GitHub Actions**.
+- **GitLab:** Settings → General → Visibility → Pages: **Everyone**.
