@@ -1,5 +1,5 @@
 # GitLab Pages: publica el contenido de la carpeta public/ en cada push a la rama por defecto.
-# Antes de publicar, `pnpm install` copia Bootstrap a public/assets/ (postinstall).
+# Antes de publicar, `pnpm build` compila Tailwind CSS a public/assets/css/app.css.
 # URL resultante: https://<usuario-o-grupo>.gitlab.io/<repositorio>/
 pages:
   stage: deploy
@@ -14,7 +14,8 @@ pages:
       - .pnpm-store
   script:
     - corepack enable   # activa la versión de pnpm de "packageManager" en package.json
-    - pnpm install --prod --frozen-lockfile --store-dir .pnpm-store
+    - pnpm install --frozen-lockfile --store-dir .pnpm-store
+    - pnpm build
   artifacts:
     paths:
       - public

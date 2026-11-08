@@ -1,0 +1,5 @@
+# Configuración de pnpm.
+# @parcel/watcher (usado por `tailwindcss --watch`) trae binarios precompilados;
+# su script de instalación solo compila desde el código fuente si se pide. No hace falta ejecutarlo.
+allowBuilds:
+  '@parcel/watcher': false

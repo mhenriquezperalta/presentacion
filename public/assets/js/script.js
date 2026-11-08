@@ -12,35 +12,66 @@
     toggleBackToTop();
   }
 
-  // Bootstrap 5.3.8 (assets/js/bootstrap.bundle.min.js) maneja el menú colapsable y la sección activa (Scrollspy).
-  if (!window.bootstrap) return;
-
-  // En móvil, cierra el menú al elegir una sección.
+  // Menú móvil: abre/cierra y se cierra al elegir una sección.
+  var toggle = document.querySelector('.nav-toggle');
   var menu = document.getElementById('menu');
-  if (menu) {
+  if (toggle && menu) {
+    var setMenu = function (open) {
+      menu.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    };
+    toggle.addEventListener('click', function () {
+      setMenu(!menu.classList.contains('is-open'));
+    });
     menu.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A' && menu.classList.contains('show')) {
-        bootstrap.Collapse.getOrCreateInstance(menu).hide();
-      }
+      if (e.target.tagName === 'A') setMenu(false);
     });
   }
 
-  // "Ver CV": muestra el PDF en un modal. Sin visor de PDF integrado
-  // (p. ej. Chrome en Android), el enlace descarga el archivo.
-  var modalEl = document.getElementById('cv-modal');
-  if (modalEl && navigator.pdfViewerEnabled !== false) {
-    var frame = modalEl.querySelector('.modal-frame');
-    var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
-    modalEl.addEventListener('show.bs.modal', function () {
-      if (!frame.getAttribute('src')) frame.setAttribute('src', frame.getAttribute('data-src'));
+  // Marca en el menú la sección visible.
+  if (menu && 'IntersectionObserver' in window) {
+    var links = menu.querySelectorAll('a.nav-link');
+    var byId = {};
+    for (var i = 0; i < links.length; i++) {
+      byId[links[i].getAttribute('href').slice(1)] = links[i];
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var link = byId[entry.target.id];
+        if (link && entry.isIntersecting) {
+          for (var k = 0; k < links.length; k++) links[k].removeAttribute('aria-current');
+          link.setAttribute('aria-current', 'true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    Object.keys(byId).forEach(function (id) {
+      var section = document.getElementById(id);
+      if (section) observer.observe(section);
     });
+  }
+
+  // "Ver CV": muestra el PDF en un <dialog>. Sin <dialog> o sin visor de PDF
+  // integrado (p. ej. Chrome en Android), el enlace descarga el archivo.
+  var modal = document.getElementById('cv-modal');
+  if (modal && typeof modal.showModal === 'function' && navigator.pdfViewerEnabled !== false) {
+    var frame = modal.querySelector('iframe');
+    var openModal = function () {
+      if (!frame.getAttribute('src')) frame.setAttribute('src', frame.getAttribute('data-src'));
+      modal.showModal();
+    };
     var cvLinks = document.querySelectorAll('.js-cv-modal');
-    for (var i = 0; i < cvLinks.length; i++) {
-      cvLinks[i].addEventListener('click', function (e) {
+    for (var j = 0; j < cvLinks.length; j++) {
+      cvLinks[j].addEventListener('click', function (e) {
         e.preventDefault();
-        modal.show();
+        openModal();
       });
     }
-    if (location.hash === '#cv') modal.show();
+    modal.querySelector('.modal-close').addEventListener('click', function () { modal.close(); });
+    // Cierra al hacer clic fuera del contenido (sobre el fondo).
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) modal.close();
+    });
+    if (location.hash === '#cv') openModal();
   }
 })();

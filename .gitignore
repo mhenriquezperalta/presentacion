@@ -8,7 +8,8 @@ landing.zip
 # Dependencias de Node (pnpm)
 node_modules/
 
-# Dependencias del navegador: las copia scripts/copy-vendor.mjs en cada `pnpm install`
-public/assets/css/bootstrap.min.css*
-public/assets/js/bootstrap.bundle.min.js*
-public/assets/bootstrap-LICENSE.txt
+# CSS generado por Tailwind (pnpm build / pnpm install) desde src/css/app.css
+public/assets/css/app.css
+
+# Respaldos locales (p. ej. tmp/version-bootstrap)
+tmp/

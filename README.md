@@ -20,47 +20,50 @@ Sitio de una sola página con la presentación profesional y el currículum de M
 
 | | Versión | Uso |
 |---|---|---|
-| [Bootstrap](https://getbootstrap.com/) | 5.3.8 | Componentes y estilos del sitio, servido localmente (sin CDN) |
+| [Tailwind CSS](https://tailwindcss.com/) | 4.3.3 | Estilos del sitio, compilados con su CLI a un CSS estático |
 | [Vite](https://vite.dev/) | 8.3.5 | Servidor de desarrollo con recarga automática (no participa en el despliegue) |
 | [pnpm](https://pnpm.io/) | 11.17.0 | Gestor de dependencias |
 | Node.js | ≥ 22.12 | Requerido por pnpm y Vite |
 
-El sitio no tiene paso de build: es HTML, CSS y JavaScript que se publican tal cual desde `public/`.
+El único paso de build es compilar el CSS de Tailwind (`src/css/app.css` → `public/assets/css/app.css`). El resto es HTML y JavaScript que se publican tal cual desde `public/`.
+
+La versión anterior, hecha con Bootstrap 5.3.8, está respaldada en `tmp/version-bootstrap/` (solo local) y en el historial de git (commit `ebb38f5`).
 
 ## Desarrollo local
 
 ```bash
-pnpm install   # instala dependencias y copia Bootstrap a public/assets/
-pnpm dev       # servidor en http://localhost:5173 (abre el navegador)
+pnpm install   # instala dependencias y compila el CSS
+pnpm dev       # Tailwind en modo watch + servidor en http://localhost:5173 (abre el navegador)
 ```
 
 | Comando | Qué hace |
 |---|---|
-| `pnpm install` | Instala dependencias y, al terminar, copia Bootstrap a `public/assets/` |
-| `pnpm dev` | Servidor de desarrollo con recarga automática; abre el navegador |
-| `pnpm start` | Igual que `pnpm dev`, sin abrir el navegador |
-| `pnpm vendor` | Vuelve a copiar Bootstrap a `public/assets/` sin reinstalar |
+| `pnpm install` | Instala dependencias y, al terminar, compila el CSS (`pnpm build`) |
+| `pnpm dev` | Tailwind en modo watch + servidor con recarga automática; abre el navegador |
+| `pnpm start` | Solo el servidor de desarrollo, sin modo watch ni abrir el navegador |
+| `pnpm build` | Compila y minifica `src/css/app.css` → `public/assets/css/app.css` |
 
 `pnpm install` es obligatorio después de clonar el repositorio: sin él la página se ve sin estilos. Una vez ejecutado, también se puede abrir con Laragon (http://localhost/presentacion/public/) o con `cd public && python -m http.server 8000`.
 
 ## Estructura
 
 ```
+src/css/app.css                ← estilos fuente (Tailwind): colores, componentes, loader, modal, impresión
 public/                        ← lo único que se publica
-  index.html                   ← todo el contenido del sitio
+  index.html                   ← todo el contenido del sitio, con clases de Tailwind
   assets/
-    css/styles.css             ← identidad visual sobre Bootstrap, modo oscuro, loader, impresión
-    js/script.js               ← menú móvil, modal del CV, botón "Volver arriba"
+    css/app.css                ← CSS generado por Tailwind (no se sube al repositorio)
+    js/script.js               ← menú móvil, sección activa, modal del CV, botón "Volver arriba"
     img/                       ← imágenes
     docs/Curriculum_Vitae_Manuel_Henriquez.pdf  ← CV que muestra el modal
-    (bootstrap.min.css, bootstrap.bundle.min.js y su licencia los genera pnpm install)
-scripts/copy-vendor.mjs        ← copia Bootstrap de node_modules a public/assets/
 package.json, pnpm-lock.yaml   ← dependencias
+pnpm-workspace.yaml            ← configuración de pnpm
 vite.config.js                 ← configuración del servidor de desarrollo
 .github/workflows/pages.yml    ← despliegue en GitHub Pages
 .gitlab-ci.yml                 ← despliegue en GitLab Pages
 AGENTS.md, CLAUDE.md           ← guía del proyecto para agentes de código (mismo contenido)
 docs/                          ← material fuente del CV (no se sube al repositorio)
+tmp/                           ← respaldos locales (no se suben al repositorio)
 ```
 
 ## Actualizar el contenido
@@ -68,7 +71,7 @@ docs/                          ← material fuente del CV (no se sube al reposit
 - **Textos del sitio:** edita `public/index.html`. Si cambia el cargo o la experiencia, actualiza también el bloque JSON-LD del `<head>` y las cifras de la sección "Perfil".
 - **CV en PDF:** reemplaza `public/assets/docs/Curriculum_Vitae_Manuel_Henriquez.pdf` manteniendo el nombre. Antes de publicarlo, revisa que no incluya datos de contacto de terceros (referencias).
 - **Redes:** los enlaces a LinkedIn, GitHub y GitLab están en la lista `.socials` de la sección Contacto y en `sameAs` del JSON-LD.
-- **Colores:** variables `--bs-*` al inicio de `public/assets/css/styles.css`, para el tema claro y el oscuro.
+- **Estilos:** clases de Tailwind en `public/index.html`; los colores (tema claro y oscuro) y componentes repetidos están en `src/css/app.css`. Con `pnpm dev` el CSS se recompila solo al guardar.
 
 ## Dependencias
 
@@ -79,7 +82,7 @@ pnpm add --save-exact paquete@versión      # dependencia del sitio
 pnpm add -D --save-exact paquete@versión   # dependencia de desarrollo
 ```
 
-No se descargan librerías a mano ni se usan CDN. Para actualizar Bootstrap: `pnpm add --save-exact bootstrap@X.Y.Z`. Los archivos de Bootstrap en `public/assets/` no se suben al repositorio: los genera `pnpm install`, tanto en local como en los pipelines.
+No se descargan librerías a mano ni se usan CDN. Para actualizar Tailwind: `pnpm add -D --save-exact tailwindcss@X.Y.Z @tailwindcss/cli@X.Y.Z`. El CSS compilado no se sube al repositorio: lo genera `pnpm build`, tanto en local como en los pipelines.
 
 ## Ramas y publicación
 
@@ -94,7 +97,7 @@ git merge develop
 git push
 ```
 
-Ambos pipelines ejecutan `pnpm install --prod --frozen-lockfile` y publican `public/`. Si cambias dependencias, sube también `pnpm-lock.yaml`.
+Ambos pipelines ejecutan `pnpm install --frozen-lockfile` y `pnpm build`, y publican `public/`. Si cambias dependencias, sube también `pnpm-lock.yaml`.
 
 Configuración necesaria (ya aplicada en este proyecto):
 
