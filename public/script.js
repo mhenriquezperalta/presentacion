@@ -2,6 +2,16 @@
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
 
+  // Botón flotante "Volver arriba": aparece después de bajar 400px.
+  var backToTop = document.querySelector('.back-to-top');
+  if (backToTop) {
+    var toggleBackToTop = function () {
+      backToTop.classList.toggle('show', window.scrollY > 400);
+    };
+    window.addEventListener('scroll', toggleBackToTop, { passive: true });
+    toggleBackToTop();
+  }
+
   // Bootstrap (vendor/bootstrap-5.3.8) maneja el menú colapsable y la sección activa (Scrollspy).
   if (!window.bootstrap) return;
 

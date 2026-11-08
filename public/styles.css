@@ -93,6 +93,15 @@ h1, h2, h3 { letter-spacing: -.01em; }
 .btn-icon { display: inline-grid; place-items: center; width: 42px; height: 42px; padding: 0; }
 .btn-icon svg { transition: transform .15s; }
 .btn-icon:hover svg { transform: translateY(-2px); }
+
+/* Botón flotante "Volver arriba": script.js agrega .show al bajar por la página.
+   Sin JavaScript (html sin .js) queda siempre visible. */
+.back-to-top {
+  position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 1030;
+  width: 48px; height: 48px; box-shadow: var(--shadow), 0 2px 8px rgba(0, 0, 0, .2);
+  transition: opacity .2s, visibility .2s, transform .2s;
+}
+.js .back-to-top:not(.show) { opacity: 0; visibility: hidden; transform: translateY(12px); }
 .btn-light { --bs-btn-color: #0b5f59; --bs-btn-hover-color: #0b5f59; font-weight: 600; }
 
 .skip-link {
