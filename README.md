@@ -1,6 +1,6 @@
 # Manuel Henríquez — Presentación y currículum
 
-Sitio estático (HTML + CSS + JS con Bootstrap 5.3.8 local, sin CDN ni build) con la presentación profesional y el CV de Manuel Alejandro Henríquez Peralta. Listo para GitLab Pages y GitHub Pages.
+Sitio estático (HTML + CSS + JS con Bootstrap 5.3.8 instalado con pnpm, sin CDN ni build) con la presentación profesional y el CV de Manuel Alejandro Henríquez Peralta. Listo para GitLab Pages y GitHub Pages.
 
 **Sitio publicado:**
 
@@ -37,11 +37,13 @@ Ver [AGENTS.md](AGENTS.md) para las convenciones del proyecto.
 Requiere Node 22.12 o superior y pnpm.
 
 ```bash
-pnpm install
+pnpm install  # instala dependencias y copia Bootstrap a public/assets/
 pnpm dev      # servidor con recarga automática en http://localhost:5173
 ```
 
-Sin Node: `cd public && python -m http.server 8000` y abre http://localhost:8000.
+Las dependencias se agregan siempre con pnpm (`pnpm add --save-exact paquete@versión`). Los archivos de Bootstrap en `public/assets/` los genera `pnpm install` y no se suben al repositorio; los pipelines los generan antes de publicar.
+
+Sin Vite (después de `pnpm install`): `cd public && python -m http.server 8000` y abre http://localhost:8000.
 
 ## Publicar en GitLab Pages
 
