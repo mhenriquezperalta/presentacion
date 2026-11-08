@@ -2,6 +2,8 @@
 
 Guía para agentes de código (Claude Code, Codex, Cursor, Copilot, etc.) que trabajen en este repositorio.
 
+> Este archivo y `CLAUDE.md` tienen el mismo contenido de proyecto (`CLAUDE.md` agrega notas propias de Claude Code). Si cambias uno, actualiza el otro.
+
 ## Qué es
 
 Sitio estático de **presentación y currículum** de Manuel Alejandro Henríquez Peralta (Ingeniero en Informática). Una sola página en español, sin build, construida con **Bootstrap 5.3.8** servido localmente (sin CDN). Todas las dependencias se gestionan con **pnpm**. Se publica en GitHub Pages y GitLab Pages desde la carpeta `public/`.
