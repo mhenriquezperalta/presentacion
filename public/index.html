@@ -22,6 +22,16 @@
       var apply = function () { document.documentElement.setAttribute('data-bs-theme', mq && mq.matches ? 'dark' : 'light'); };
       apply();
       if (mq && mq.addEventListener) mq.addEventListener('change', apply);
+
+      // Loader: se oculta al terminar la carga (o a los 8 s como máximo) y luego se elimina.
+      var hideLoader = function () {
+        var loader = document.getElementById('page-loader');
+        if (!loader || loader.classList.contains('is-hidden')) return;
+        loader.classList.add('is-hidden');
+        setTimeout(function () { if (loader.parentNode) loader.parentNode.removeChild(loader); }, 600);
+      };
+      window.addEventListener('load', hideLoader);
+      setTimeout(hideLoader, 8000);
     })();
   </script>
   <link rel="stylesheet" href="assets/css/bootstrap.min.css">
@@ -47,6 +57,14 @@
   </script>
 </head>
 <body data-bs-spy="scroll" data-bs-target="#menu" data-bs-root-margin="0px 0px -45%">
+
+  <div id="page-loader" class="page-loader d-print-none" role="status">
+    <div class="page-loader-inner">
+      <span class="brand-mark" aria-hidden="true">MH</span>
+      <div class="spinner-border text-primary" aria-hidden="true"></div>
+      <span class="visually-hidden">Cargando…</span>
+    </div>
+  </div>
 
   <a class="visually-hidden-focusable skip-link" href="#perfil">Saltar al contenido</a>
 

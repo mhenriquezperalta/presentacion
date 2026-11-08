@@ -104,6 +104,19 @@ h1, h2, h3 { letter-spacing: -.01em; }
 .js .back-to-top:not(.show) { opacity: 0; visibility: hidden; transform: translateY(12px); }
 .btn-light { --bs-btn-color: #0b5f59; --bs-btn-hover-color: #0b5f59; font-weight: 600; }
 
+/* Loader de carga: lo oculta el script del <head> (evento load). Sin JavaScript no se muestra. */
+.page-loader {
+  position: fixed; inset: 0; z-index: 2000;
+  display: grid; place-items: center;
+  background: var(--bs-body-bg);
+  transition: opacity .4s ease, visibility .4s ease;
+}
+.page-loader.is-hidden { opacity: 0; visibility: hidden; }
+html:not(.js) .page-loader { display: none; }
+.page-loader-inner { position: relative; display: grid; place-items: center; }
+.page-loader .brand-mark { width: 44px; height: 44px; font-size: 1rem; font-weight: 700; border-radius: 12px; }
+.page-loader .spinner-border { position: absolute; width: 84px; height: 84px; border-width: 3px; }
+
 .skip-link {
   position: absolute; left: 1rem; top: 1rem; z-index: 1100;
   background: var(--bs-primary); color: var(--on-primary); padding: .5rem 1rem; border-radius: 8px;
