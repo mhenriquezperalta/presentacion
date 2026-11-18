@@ -1,6 +1,6 @@
 # Material fuente del CV: los .docx incluyen datos de contacto de referencias (terceros).
 # El PDF publicable se copia a public/ y se versiona desde ahí.
-docs/
+/docs/
 
 # Copia de la plantilla original
 landing.zip
